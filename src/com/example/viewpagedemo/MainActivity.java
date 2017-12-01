@@ -9,20 +9,35 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.R.integer;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
 	private View view1,view2,view3;
 	private ViewPager viewPager;
-	private PagerTabStrip pagerTabStrip;
+	//private PagerTabStrip pagerTabStrip;
+	private ImageView cursor;
+	private int bmpw = 0;
+	private int offset = 0;
+	private int currIndex = 0;
+	
 	
 	private List<View> viewList;
 	private List<String> titleList;
@@ -47,15 +62,16 @@ public class MainActivity extends ActionBarActivity {
         titleList.add("体育");
         titleList.add("音乐");
         titleList.add("娱乐");
-        
-        pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagertab);
-        pagerTabStrip.setTabIndicatorColor(Color.RED);
+        initCursorPos();
+//        pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagertab);
+//        pagerTabStrip.setTabIndicatorColor(Color.RED);
         PagerAdapter pagerAdapter = new PagerAdapter() {
 			
 			@Override
 			public boolean isViewFromObject(View arg0, Object arg1) {
 				// TODO Auto-generated method stub
-				return arg0==viewList.get(Integer.parseInt(arg1.toString()));
+				return arg0==arg1;
+				//return arg0==viewList.get(Integer.parseInt(arg1.toString()));
 			}
 			
 			@Override
@@ -75,7 +91,8 @@ public class MainActivity extends ActionBarActivity {
 			public Object instantiateItem(ViewGroup container, int position) {
 				// TODO Auto-generated method stub
 				container.addView(viewList.get(position));
-				return position;
+				return viewList.get(position);
+				//return position;
 			}
 			
 			@Override
@@ -102,5 +119,50 @@ public class MainActivity extends ActionBarActivity {
 			}  */
 		};
 		viewPager.setAdapter(pagerAdapter);
+		viewPager.setOnPageChangeListener(new MyPageChangeListener());
+    }
+    //初始化指示器位置  
+    public void initCursorPos() {  
+        // 初始化动画  
+        cursor = (ImageView) findViewById(R.id.cursor);  
+        bmpw = BitmapFactory.decodeResource(getResources(), R.drawable.processmanager_setting_icon)  
+                .getWidth();// 获取图片宽度  
+  
+        DisplayMetrics dm = new DisplayMetrics();  
+        getWindowManager().getDefaultDisplay().getMetrics(dm);  
+        int screenW = dm.widthPixels;// 获取分辨率宽度  
+        offset = (screenW / viewList.size() - bmpw) / 2;// 计算偏移量  
+  
+        Matrix matrix = new Matrix();  
+        matrix.postTranslate(offset, 0);  
+        cursor.setImageMatrix(matrix);// 设置动画初始位置  
+    }  
+    public class MyPageChangeListener implements OnPageChangeListener{
+    	int one = offset * 2 + bmpw;// 页卡1 -> 页卡2 偏移量 
+    	int initial = 0;//游标的位置
+ 	
+		@Override
+		public void onPageScrollStateChanged(int arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onPageScrolled(int arg0, float arg1, int arg2) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override 
+		public void onPageSelected(int arg0) { 
+			Animation animation = new TranslateAnimation(one *initial,one *arg0,0,0); 
+			initial = arg0; 
+			
+			currIndex = arg0;
+			animation.setFillAfter(true);
+			animation.setDuration(300);
+			cursor.startAnimation(animation);
+		}
+    	
     }
 }
