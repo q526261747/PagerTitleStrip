@@ -9,8 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android.layout_gravity="center">
-        <android.support.v4.view.PagerTitleStrip
-            android:id="@+id/pagertitle"
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/pagertab"
             android:layout_width="wrap_content"    
             android:layout_height="wrap_content"    
             android:layout_gravity="top" 

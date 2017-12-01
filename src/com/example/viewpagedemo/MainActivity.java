@@ -7,7 +7,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import android.os.Build;
 public class MainActivity extends ActionBarActivity {
 	private View view1,view2,view3;
 	private ViewPager viewPager;
+	private PagerTabStrip pagerTabStrip;
 	
 	private List<View> viewList;
 	private List<String> titleList;
@@ -45,6 +48,8 @@ public class MainActivity extends ActionBarActivity {
         titleList.add("音乐");
         titleList.add("娱乐");
         
+        pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagertab);
+        pagerTabStrip.setTabIndicatorColorResource(Color.RED);
         PagerAdapter pagerAdapter = new PagerAdapter() {
 			
 			@Override
