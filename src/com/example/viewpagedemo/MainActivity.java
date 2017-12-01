@@ -49,7 +49,7 @@ public class MainActivity extends ActionBarActivity {
         titleList.add("娱乐");
         
         pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagertab);
-        pagerTabStrip.setTabIndicatorColorResource(Color.RED);
+        pagerTabStrip.setTabIndicatorColor(Color.RED);
         PagerAdapter pagerAdapter = new PagerAdapter() {
 			
 			@Override
